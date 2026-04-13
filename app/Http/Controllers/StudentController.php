@@ -3,62 +3,49 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Student;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // READ
     public function index()
     {
-        //
+        $students = Student::all();
+        return view('students.index', compact('students'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // CREATE FORM
     public function create()
     {
-        //
+        return view('students.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // STORE
     public function store(Request $request)
     {
-        //
+        Student::create($request->all());
+        return redirect()->route('students.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // EDIT FORM
+    public function edit($id)
     {
-        //
+        $student = Student::findOrFail($id);
+        return view('students.edit', compact('student'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // UPDATE
+    public function update(Request $request, $id)
     {
-        //
+        $student = Student::findOrFail($id);
+        $student->update($request->all());
+        return redirect()->route('students.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // DELETE
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        Student::destroy($id);
+        return redirect()->route('students.index');
     }
 }
